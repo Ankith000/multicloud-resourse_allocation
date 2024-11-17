@@ -1,23 +1,27 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import ProviderSelector from './ProviderSelector';
+import InstanceForm from './InstanceForm';
 import './App.css';
 
 function App() {
+  const [provider, setProvider] = useState('');
+  const [instanceType, setInstanceType] = useState('');
+  const [response, setResponse] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setResponse(`Instance type "${instanceType}" has been initiated on ${provider.toUpperCase()}.`);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Multi-Cloud Resource Allocation</h1>
+      <form onSubmit={handleSubmit}>
+        <ProviderSelector provider={provider} setProvider={setProvider} />
+        <InstanceForm instanceType={instanceType} setInstanceType={setInstanceType} />
+        <button type="submit">Allocate Resource</button>
+      </form>
+      {response && <pre>{response}</pre>}
     </div>
   );
 }
